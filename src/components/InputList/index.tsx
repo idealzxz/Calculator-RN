@@ -25,19 +25,25 @@ export default class InputList extends Component<InputListprops, InputListstate>
         this.props.onchange(Number(val), this.props.no);
     }
     clearInput() {
-        this.state.inputText&&this.setState({
-            inputText: '',
-        });
+        this.state.inputText &&
+            this.setState({
+                inputText: '',
+            });
     }
     componentDidMount() {
         this.props.onRef(this);
+    }
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+            return;
+        };
     }
     render() {
         return (
             <View style={styles.InputList}>
                 <Text style={styles.InputList_Label}>{this.props.title}:</Text>
                 <TextInput
-                    style={{flex: 1}}
+                    style={{flex: 1, textAlign: 'right', paddingRight: 20}}
                     value={this.state.inputText}
                     keyboardType="numeric"
                     onChangeText={val => this.onChangeText(val)}></TextInput>

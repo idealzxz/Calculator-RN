@@ -2,12 +2,18 @@ import React, {Component} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import InputList from '@/components/InputList';
+import ShowResult from '../ShowResult';
 interface Computedprops {}
 
-interface Computedstate {}
+interface Computedstate {
+    ModalState: boolean;
+}
 export default class Computed extends Component<Computedprops, Computedstate> {
     constructor(props: Computedprops) {
         super(props);
+        this.state = {
+            ModalState: false,
+        };
     }
     private child: any = [];
     public List: any = [
@@ -23,7 +29,13 @@ export default class Computed extends Component<Computedprops, Computedstate> {
     onRef = (ref: any) => {
         ref && this.child.push(ref);
     };
-    onPressMath = () => {};
+    // 开始计算
+    onPressMath = () => {
+        this.setState({
+            ModalState: true,
+        });
+    };
+    // 重新输入
     onPressRestart = () => {
         this.List &&
             this.List.forEach((item: any) => {
@@ -34,8 +46,6 @@ export default class Computed extends Component<Computedprops, Computedstate> {
                 item.clearInput();
             });
     };
-
-    componentDidMount() {}
     render() {
         return (
             <View style={{flex: 1, padding: 20}}>
@@ -58,6 +68,11 @@ export default class Computed extends Component<Computedprops, Computedstate> {
                     onPress={this.onPressRestart}>
                     <Text style={styles.button_text}> 重新输入 </Text>
                 </TouchableOpacity>
+                <ShowResult
+                    show={this.state.ModalState}
+                    onclose={() => {
+                        this.setState({ModalState: false});
+                    }}></ShowResult>
             </View>
         );
     }
