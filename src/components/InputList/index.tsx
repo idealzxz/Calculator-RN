@@ -4,21 +4,41 @@ import {StyleSheet} from 'react-native';
 interface InputListprops {
     title: string;
     type: number;
-    value: number;
     onchange: any;
+    no: number;
+    onRef: any;
 }
-export default class InputList extends Component<InputListprops> {
+interface InputListstate {
+    inputText: string;
+}
+export default class InputList extends Component<InputListprops, InputListstate> {
     constructor(props: InputListprops) {
         super(props);
+        this.state = {
+            inputText: '',
+        };
     }
-    onChangeText(val: any) {}
+    onChangeText(val: string) {
+        this.setState({
+            inputText: val,
+        });
+        this.props.onchange(Number(val), this.props.no);
+    }
+    clearInput() {
+        this.state.inputText&&this.setState({
+            inputText: '',
+        });
+    }
+    componentDidMount() {
+        this.props.onRef(this);
+    }
     render() {
         return (
             <View style={styles.InputList}>
                 <Text style={styles.InputList_Label}>{this.props.title}:</Text>
                 <TextInput
                     style={{flex: 1}}
-                    value={this.props.value ? String(this.props.value) : ''}
+                    value={this.state.inputText}
                     keyboardType="numeric"
                     onChangeText={val => this.onChangeText(val)}></TextInput>
                 <Text>{this.props.type === 0 ? '元' : '%'}</Text>
