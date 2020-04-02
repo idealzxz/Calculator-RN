@@ -14,7 +14,7 @@ const App = () => {
                     name="Home"
                     component={HomePage}
                     options={{
-                        title: '公积金计算',
+                        title: '五险一金计算器',
                     }}
                 />
             </Stack.Navigator>
