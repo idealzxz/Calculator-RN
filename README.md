@@ -1,5 +1,5 @@
 # Calculator-RN
-公积金计算器（React-Native）
+五险一金计算器（React-Native）
 # 使用的库
 -  [React-Native](https://reactnative.cn/)
 -  [React-navigation](https://reactnavigation.org/)
