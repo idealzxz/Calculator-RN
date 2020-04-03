@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, TextInput} from 'react-native';
 import {StyleSheet} from 'react-native';
+import {Slider} from '@ant-design/react-native';
 interface InputListprops {
     title: string;
     type: number;
@@ -10,17 +11,25 @@ interface InputListprops {
 }
 interface InputListstate {
     inputText: string;
+    SliderValue: number;
 }
 export default class InputList extends Component<InputListprops, InputListstate> {
     constructor(props: InputListprops) {
         super(props);
         this.state = {
             inputText: '',
+            SliderValue: 12,
         };
     }
     onChangeText(val: string) {
         this.setState({
             inputText: val,
+        });
+        this.props.onchange(Number(val), this.props.no);
+    }
+    onChangeSlide(val: number) {
+        this.setState({
+            SliderValue: val,
         });
         this.props.onchange(Number(val), this.props.no);
     }
@@ -42,12 +51,34 @@ export default class InputList extends Component<InputListprops, InputListstate>
         return (
             <View style={styles.InputList}>
                 <Text style={styles.InputList_Label}>{this.props.title}:</Text>
-                <TextInput
-                    style={{flex: 1, textAlign: 'right', paddingRight: 20}}
-                    value={this.state.inputText}
-                    keyboardType="numeric"
-                    onChangeText={val => this.onChangeText(val)}></TextInput>
-                <Text>{this.props.type === 0 ? '元' : '%'}</Text>
+                {this.props.type === 0 ? (
+                    <View style={styles.InputView}>
+                        <TextInput
+                            style={styles.InputViewText}
+                            value={this.state.inputText}
+                            keyboardType="numeric"
+                            onChangeText={val => this.onChangeText(val)}></TextInput>
+                        <Text>元</Text>
+                    </View>
+                ) : (
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{flex: 1}}>
+                            <Slider
+                                min={0}
+                                max={12}
+                                defaultValue={this.state.SliderValue}
+                                onChange={(value: any) => {
+                                    let val = parseInt(value);
+                                    this.onChangeSlide(val);
+                                }}
+                            />
+                        </View>
+
+                        <Text style={{width: 30, textAlign: 'right', marginLeft: 5}}>
+                            {this.state.SliderValue}%
+                        </Text>
+                    </View>
+                )}
             </View>
         );
     }
@@ -61,5 +92,14 @@ const styles = StyleSheet.create({
     },
     InputList_Label: {
         paddingRight: 30,
+    },
+    InputView: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    InputViewText: {
+        flex: 1,
+        textAlign: 'right',
+        paddingRight: 10,
     },
 });

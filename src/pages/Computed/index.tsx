@@ -3,6 +3,7 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import InputList from '@/components/InputList';
 import ShowResult from '../ShowResult';
+
 interface Computedprops {}
 
 interface Computedstate {
