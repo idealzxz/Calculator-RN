@@ -3,17 +3,19 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import InputList from '@/components/InputList';
 import ShowResult from '../ShowResult';
-
+import Calculation from '@/util/Calculation';
 interface Computedprops {}
 
 interface Computedstate {
     ModalState: boolean;
+    result: any;
 }
 export default class Computed extends Component<Computedprops, Computedstate> {
     constructor(props: Computedprops) {
         super(props);
         this.state = {
             ModalState: false,
+            result: [],
         };
     }
     private child: any = [];
@@ -21,17 +23,25 @@ export default class Computed extends Component<Computedprops, Computedstate> {
         {title: '税前工资', type: 0, value: 0},
         {title: '社保基数', type: 0, value: 0},
         {title: '公积金基数', type: 0, value: 0},
-        {title: '公积金缴存比例', type: 1, value: 0},
+        {title: '公积金缴存比例', type: 1, value: 12},
     ];
     onchange(e: number, index: number) {
         this.List[index].value = e;
-        console.log(this.List);
     }
     onRef = (ref: any) => {
         ref && this.child.push(ref);
     };
     // 开始计算
     onPressMath = () => {
+        const Indata = {
+            Pay: this.List[0].value || 0,
+            SbBase: this.List[1].value || 0,
+            GjjBase: this.List[2].value || 0,
+            GjjRate: this.List[3].value || 0,
+        };
+        const result = new Calculation(Indata).StartMath();
+        console.log(result);
+        this.setState({result: result});
         this.setState({
             ModalState: true,
         });
@@ -40,7 +50,9 @@ export default class Computed extends Component<Computedprops, Computedstate> {
     onPressRestart = () => {
         this.List &&
             this.List.forEach((item: any) => {
-                item.value = 0;
+                if (item.type !== 1) {
+                    item.value = 0;
+                }
             });
         this.child &&
             this.child.map((item: any) => {
@@ -70,6 +82,7 @@ export default class Computed extends Component<Computedprops, Computedstate> {
                     <Text style={styles.button_text}> 重新输入 </Text>
                 </TouchableOpacity>
                 <ShowResult
+                    result={this.state.result}
                     show={this.state.ModalState}
                     onclose={() => {
                         this.setState({ModalState: false});

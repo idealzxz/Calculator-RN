@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Modal, Text, TouchableOpacity, View,StyleSheet} from 'react-native';
+import {Modal, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 interface ShowResultstate {}
 interface ShowResultprops {
+    result: any;
     show: boolean;
     onclose: any;
 }
@@ -10,13 +11,6 @@ export default class ShowResult extends Component<ShowResultprops, ShowResultsta
     constructor(props: ShowResultprops) {
         super(props);
     }
-    private List = [
-        {name: '养老保险', value: 0},
-        {name: '医疗保险', value: 0},
-        {name: '养老保险', value: 0},
-        {name: '失业保险', value: 0},
-        {name: '住房公积金', value: 0},
-    ];
     componentDidMount() {}
     render() {
         return (
@@ -29,9 +23,9 @@ export default class ShowResult extends Component<ShowResultprops, ShowResultsta
                                 justifyContent: 'space-between',
                             }}>
                             <View style={styles.result}>
-                                {this.List.map((item: any, index: number) => {
+                                {this.props.result.map((item: any, index: number) => {
                                     return (
-                                        <Text key={index} style={{padding:10}}>
+                                        <Text key={index} style={{padding: 10}}>
                                             {item.name}: {item.value}
                                         </Text>
                                     );
@@ -39,7 +33,7 @@ export default class ShowResult extends Component<ShowResultprops, ShowResultsta
                             </View>
 
                             <TouchableOpacity
-                            style={styles.button}
+                                style={styles.button}
                                 onPress={() => {
                                     this.props.onclose();
                                 }}>
@@ -62,7 +56,7 @@ const styles = StyleSheet.create({
     button_text: {
         color: '#ffffff',
     },
-    result:{
-        margin:15
-    }
+    result: {
+        margin: 15,
+    },
 });

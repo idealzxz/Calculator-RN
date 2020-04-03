@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 const User = () => {
     return (
         <View>
-            <Text>user</Text>
+            <Text>。。。。。</Text>
         </View>
     )
 }
